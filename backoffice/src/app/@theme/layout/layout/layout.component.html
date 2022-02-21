@@ -6,8 +6,10 @@
       <h1>Ant Design Of Angular</h1>
     </div>
     <ul nz-menu nzTheme="dark" nzMode="inline" [nzInlineCollapsed]="isCollapsed">
-      <li nz-menu-item nzOpen nzMatchRouter>
-        <a routerLink="/dashboard">Dashboard</a>
+
+      <li nz-menu-item routerLink="/dashboard" nzMatchRouter>
+        <i nz-icon nzType="dashboard" nzTheme="outline"></i>
+        <span >Dashboard</span>
       </li>
       <li nz-submenu nzOpen nzTitle="Usuarios" nzIcon="user">
         <ul>

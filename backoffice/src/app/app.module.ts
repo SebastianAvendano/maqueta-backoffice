@@ -43,7 +43,7 @@ registerLocaleData(en);
     ThemeModule
   ],
   providers: [{ provide: NZ_I18N, useValue: en_US }, AuthService, FirebaseService, NavigatorService, ParamsService, BroadCastService, AuthService, ParamsService,
-    AngularFireAuthGuard
+    AngularFireAuthGuard,
   ],
   bootstrap: [AppComponent]
 })

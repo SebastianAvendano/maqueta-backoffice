@@ -1,22 +1,26 @@
-<nz-table #basicTable [nzData]="listOfData">
+<div>
+  <button nz-button nzType="primary" class="button-add"  (click)="showModal()">Agrergar</button>
+</div>
+  <nz-table #basicTable >
   <thead>
     <tr>
-      <th>Name</th>
-      <th>Age</th>
-      <th>Address</th>
+      <th>Estado</th>
+      <th>Email</th>
+      <th>Fecha de Creacion</th>
       <th>Action</th>
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let data of basicTable.data">
-      <td>{{ data.name }}</td>
-      <td>{{ data.age }}</td>
-      <td>{{ data.address }}</td>
+    <tr *ngFor="let user of users">
+      <td>{{ user.email }}</td>
+      <td>{{ user.createdAt }}</td>
+      <td>{{ user.isActive }}</td>
       <td>
-        <a>Action 一 {{ data.name }}</a>
+        <a>Action 一 {{ user.email }}</a>
         <nz-divider nzType="vertical"></nz-divider>
         <a>Delete</a>
       </td>
     </tr>
   </tbody>
 </nz-table>
+

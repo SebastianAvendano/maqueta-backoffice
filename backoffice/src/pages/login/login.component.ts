@@ -1,10 +1,15 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Login } from '../../models/login/index';
-import { NavigatorService } from '../../providers/navigation/navigator/navigator.service';
+// Libraries
+import { Component } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { UsersService } from '../users/users.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+
+// Models
 import { User } from '../../models/user/index';
+import { NotificationService } from '../../providers/notifications/notification.service';
+import { NavigatorService } from '../../providers/navigation/navigator/navigator.service';
+
+// Services
+import { UserService } from '../users/users.service';
 import { AuthService } from '../../providers/auth/auth.service';
 
 @Component({
@@ -12,35 +17,33 @@ import { AuthService } from '../../providers/auth/auth.service';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent implements OnInit {
-
+export class LoginComponent {
   loginForm!: FormGroup;
+  message: string = ""
+  isLoading = false;
 
   constructor(
-    private firestore: AngularFirestore,
-    private userService: UsersService,
     private fb: FormBuilder,
+    private auth: AuthService,
+    private userService: UserService,
     private navCtrl: NavigatorService,
-    private auth: AuthService
+    private firestore: AngularFirestore,
+    private notification : NotificationService
   ) {
     this.loginForm = this.fb.group({
+      remember: [true],
       email: [null, [Validators.required, Validators.email]],
       password: [null, [Validators.required, Validators.minLength(6)]],
-      remember: [true]
     });
   }
 
-  ngOnInit() {
-  }
-
   async login() {
-
     if (this.loginForm.valid) {
+      this.isLoading = true;
       const email = this.loginForm.value.email
       const password = this.loginForm.value.password
 
       await this.auth.login(email, password).then((user?) => {
-
         if (user?.user) {
           this.firestore.collection("users").doc(user.user!.uid).get().subscribe(async (documentSnapshot) => {
 
@@ -57,22 +60,26 @@ export class LoginComponent implements OnInit {
               this.auth.session(false)
               this.auth.logout()
               this.loginForm.reset()
-              console.log('problemas en el login')
+              this.message = 'Usuario o contraseña incorrectos'
+              this.notification.showMessage(this.message)
             }
           })
         }
       }
-      ).catch(error =>
-        console.log(error)
-      )
+      ).catch(() => {
+        this.isLoading = false
+        this.message = 'Usuario o contraseña incorrectos'
+        this.notification.showMessage(this.message)
+      })
     } else {
       Object.values(this.loginForm.controls).forEach(control => {
         if (control.invalid) {
           control.markAsDirty()
           control.updateValueAndValidity({ onlySelf: true })
+          this.message = 'Los datos ingresados son invalidos'
+          this.notification.showMessage(this.message)
         }
       })
     }
   }
-
 }

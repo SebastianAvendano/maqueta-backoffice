@@ -16,7 +16,12 @@
 }
 
 .login-form-margin {
-  margin-bottom: 10%;
+  align-items: center;
+  margin-bottom: 2%;
+}
+
+.forgot-password{
+  margin: auto;
 }
 
 .login-form-forgot {
