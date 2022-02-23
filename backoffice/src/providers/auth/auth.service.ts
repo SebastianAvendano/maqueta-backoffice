@@ -29,14 +29,16 @@ export class AuthService {
     return this.afAuth.createUserWithEmailAndPassword(email, password);
   }
 
-
   getCurrentUser(): Observable<firebase.User | null> {
     return this.afAuth.user;
   }
 
   session(success: boolean){
     this._session.next(success);
+  }
 
+  resetPassword(email: string) : Promise<void>{
+   return this.afAuth.sendPasswordResetEmail(email)
   }
 
 }

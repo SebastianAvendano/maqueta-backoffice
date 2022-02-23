@@ -12,6 +12,9 @@ import { NzFormModule } from 'ng-zorro-antd/form';
 import { CreateComponent } from './create/create.component';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzSelectModule } from 'ng-zorro-antd/select';
+import { NzSwitchModule } from 'ng-zorro-antd/switch';
+import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
+import { NzTagModule } from 'ng-zorro-antd/tag';
 
 
 
@@ -27,7 +30,10 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
     NzModalModule,
     NzFormModule,
     NzInputModule,
-    NzSelectModule
+    NzSelectModule,
+    NzSwitchModule,
+    NzPopconfirmModule,
+    NzTagModule
   ],
   declarations: [
     ListComponent,

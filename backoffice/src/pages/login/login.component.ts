@@ -52,14 +52,26 @@ export class LoginComponent {
             const rolId = rolUser.id
             const rolData = await this.userService.getRolByKey('admin')
             const rol = rolData.docs[0].ref.id
+            const isActive = user.isActive
 
             if (rol === rolId) {
-              this.auth.session(true)
-              this.navCtrl.Push("dashboard");
+              if(isActive){
+                this.auth.session(true)
+                this.navCtrl.Push("dashboard");
+              }else {
+                this.auth.session(false)
+                this.loginForm.reset()
+                this.auth.logout()
+                this.isLoading = false
+                this.message = "usuario inactivo"
+                this.notification.showMessage(this.message)
+
+              }
             } else {
               this.auth.session(false)
               this.auth.logout()
               this.loginForm.reset()
+              this.isLoading = false
               this.message = 'Usuario o contraseña incorrectos'
               this.notification.showMessage(this.message)
             }

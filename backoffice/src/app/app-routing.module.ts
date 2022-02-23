@@ -31,7 +31,11 @@ const routes: Routes = [
     loadChildren: () => import('../pages/login/login.module').then( m => m.LoginPageModule),
     canActivate: [AngularFireAuthGuard],
     data: { authGuardPipe: redirectLoggedInToItems }
-  }
+  },
+  {
+    path: 'forgot-password',
+    loadChildren: () => import('../pages/forgotPassword/forgotPassword.module').then( m => m.ForgotPasswordPageModule),
+  },
 ];
 
 @NgModule({

@@ -22,10 +22,12 @@ export class ListComponent implements OnInit {
   users: User[] = []
   rol?: Rol
   isVisible = false;
+  selectedUser? : User
 
   constructor(
     private userService: UserService,
-    private modalService: NzModalService
+    private modalService: NzModalService,
+
   ) { }
 
   ngOnInit() {
@@ -69,12 +71,41 @@ export class ListComponent implements OnInit {
     } as User
   }
 
-  showModal(): void {
+  createUser(): void {
+
+    this.showModal("Crear usuario")
+  }
+
+  showModal(title?: string, isEditing?: boolean, user?: User): void {
     this.modalService.create({
-      nzTitle: 'Crear Usuario',
+      nzTitle:  title,
       nzWidth: '50%',
+      nzComponentParams: {
+
+        isEditing: isEditing,
+        rol: this.rol,
+        user: user
+      },
       nzContent: CreateComponent
     })
+  }
+
+   editUser(user: User) {
+    this.showModal("Actualizar usuario", true, user)
+  }
+
+  desactivateUser(user:User):void{
+    const data: Object = {
+      isActive: false,
+    }
+    this.userService.updateUser(user?.reference?.id! ,  data)
+  }
+
+  deleteUser(user: User): void {
+      this.userService.deleteUser(user?.reference?.path!).then(() => {
+      }, error => {
+        console.log(error)
+      })
   }
 
 }
