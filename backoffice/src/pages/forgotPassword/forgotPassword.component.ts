@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AuthService } from '../../providers/auth/auth.service';
 import { NotificationService } from '../../providers/notifications/notification.service';
 import { NavigatorService } from '../../providers/navigation/navigator/navigator.service';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-forgotPassword',
@@ -18,7 +19,9 @@ export class ForgotPasswordComponent implements OnInit {
     private fb: FormBuilder,
     private auth: AuthService,
     private navCtrl: NavigatorService,
-    private notification: NotificationService
+    private notification: NotificationService,
+    private location:Location
+
   ) {
     this.forgotForm = this.fb.group({
       remember: [true],
@@ -52,5 +55,8 @@ export class ForgotPasswordComponent implements OnInit {
     }
   }
 
+  goBack():void{
+    this.location.back();
+  }
 
 }

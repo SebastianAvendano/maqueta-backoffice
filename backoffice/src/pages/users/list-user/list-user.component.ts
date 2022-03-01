@@ -9,20 +9,21 @@ import { UserService } from '../users.service';
 // Models
 import { Rol } from '../../../models/rol/index';
 import { User } from '../../../models/user/index';
-import { CreateComponent } from '../create/create.component';
+import { CreateUserComponent } from '../create-user/create.component';
 
 @Component({
   selector: 'app-list',
-  templateUrl: './list.component.html',
-  styleUrls: ['./list.component.css']
+  templateUrl: './list-user.component.html',
+  styleUrls: ['./list-user.component.css']
 })
 
-export class ListComponent implements OnInit {
+export class ListUserComponent implements OnInit {
 
   users: User[] = []
   rol?: Rol
   isVisible = false;
   selectedUser? : User
+  collection: string = 'users'
 
   constructor(
     private userService: UserService,
@@ -35,7 +36,7 @@ export class ListComponent implements OnInit {
   }
 
   getRol() {
-    this.userService.getRolByKey("admin").then(snapshot => {
+    this.userService.getRolByKey("user").then(snapshot => {
       this.rol = {
         ...snapshot.docs[0].data(),
         reference: snapshot.docs[0].ref
@@ -46,7 +47,7 @@ export class ListComponent implements OnInit {
 
   getUsers() {
     this.userService
-      .getUsersByRol(this.rol?.reference!)
+      .getUsersByRol(this.collection,this.rol?.reference!)
       .onSnapshot(async (snapshot) => {
         if (!snapshot.empty) {
           const usersParse = snapshot.docs.map((document) => {
@@ -81,12 +82,11 @@ export class ListComponent implements OnInit {
       nzTitle:  title,
       nzWidth: '50%',
       nzComponentParams: {
-
         isEditing: isEditing,
         rol: this.rol,
-        user: user
+        user: user,
       },
-      nzContent: CreateComponent
+      nzContent: CreateUserComponent
     })
   }
 
@@ -98,7 +98,7 @@ export class ListComponent implements OnInit {
     const data: Object = {
       isActive: false,
     }
-    this.userService.updateUser(user?.reference?.id! ,  data)
+    this.userService.updateUser(this.collection, user?.reference?.id! ,  data)
   }
 
   deleteUser(user: User): void {

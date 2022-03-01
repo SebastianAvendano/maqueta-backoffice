@@ -12,8 +12,8 @@ showMessage(message: string): void{
   this.notification.error(message)
 }
 
-createBasicMessage(message: string): void {
-  this.notification.error(message );
+createBasicMessage(message: string, error: any): void {
+  this.notification.error(message, error);
 }
 
 

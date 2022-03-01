@@ -1,17 +1,18 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NzFormTooltipIcon } from 'ng-zorro-antd/form';
 import { NzModalRef } from 'ng-zorro-antd/modal';
 import { UserService } from '../users.service';
 import { Rol } from '../../../models/rol/index';
 import { User } from '../../../models/user/index';
+import { NotificationService } from '../../../providers/notifications/notification.service';
 
 @Component({
-  selector: 'app-create',
-  templateUrl: './create.component.html',
-  styleUrls: ['./create.component.css']
+  selector: 'app-create-admin',
+  templateUrl: './create-admin.component.html',
+  styleUrls: ['./create-admin.component.css']
 })
-export class CreateComponent implements OnInit {
+export class CreateAdminComponent implements OnInit {
   userForm!: FormGroup;
   captchaTooltipIcon: NzFormTooltipIcon = {
     type: 'info-circle',
@@ -21,11 +22,13 @@ export class CreateComponent implements OnInit {
   user?: User
   isEditing: boolean = false
   documentType?: string[] = []
+  collection!: string
 
   constructor(
     private fb: FormBuilder,
     private modal: NzModalRef,
     private userService: UserService,
+    private notification: NotificationService
   ) {
     this.userForm = this.fb.group({
       isActive: [null ],
@@ -34,8 +37,8 @@ export class CreateComponent implements OnInit {
       firtsName: [null, [Validators.required]],
       lastName: [null, [Validators.required]],
       identificationType: [null, [Validators.required]],
-      identification: [null, [Validators.required]],
-      cellPhone: [null, [Validators.required, Validators.minLength(10), Validators.maxLength(10)]],
+      identification: [null, [Validators.required, Validators.pattern('[0-9]*$')]],
+      cellPhone: [null, [Validators.required, Validators.minLength(10), Validators.maxLength(10), Validators.pattern('[0-9]*$')]],
     })
   }
 
@@ -74,14 +77,17 @@ export class CreateComponent implements OnInit {
         async (credential) => {
           const id = credential.user?.uid
           if (id !== null) {
-            const response = await this.createUser(id!)
+            const response = await this.createAdmin(id!)
             if (!response) {
               this.userService.deleteUserAuth(credential.user)
             }
           }
         }
-      ).catch(
-        error => console.log(error)
+      ).catch(error => {
+        if (error.code == 'auth/email-already-in-use'){
+          this.notification.showMessage('el correo electronico ya es usado por otro usuario')
+        }
+      }
       )
     } else {
       Object.values(this.userForm.controls).forEach(control => {
@@ -94,7 +100,7 @@ export class CreateComponent implements OnInit {
     }
   }
 
-  async createUser(id: string): Promise<boolean> {
+  async createAdmin(id: string): Promise<boolean> {
 
     const user: Object = {
       id: id,
@@ -109,7 +115,7 @@ export class CreateComponent implements OnInit {
       createdAt: new Date(),
       updatedAt: new Date()
     }
-    return this.userService.createUser(user, id).then(() => {
+    return this.userService.createUser(this.collection ,user, id).then(() => {
       this.destroyModal()
       return true
     }, error => {
@@ -119,13 +125,13 @@ export class CreateComponent implements OnInit {
 
   validateAction() : void {
     if (this.isEditing) {
-      this.updateUser()
+      this.updateAdmin()
     } else {
       this.createAuthUser()
     }
   }
 
-  updateUser() {
+  updateAdmin() {
     const user: Object = {
       isActive: this.userForm.value.isActive ? true : false,
       firtsName: this.userForm.value.firtsName,
@@ -136,7 +142,7 @@ export class CreateComponent implements OnInit {
       email: this.userForm.value.email,
       updatedAt: new Date()
     }
-    this.userService.updateUser(this.user?.reference?.id!, user).then(() => {
+    this.userService.updateUser(this.collection , this.user?.reference?.id!, user).then(() => {
       this.destroyModal()
     }, error => {
       console.log(error)

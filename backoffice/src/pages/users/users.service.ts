@@ -15,15 +15,14 @@ import { User } from '../../models/user/index';
   providedIn: 'root'
 })
 export class UserService {
-  private collection: string = "users"
 
   constructor(
     private firebase: FirebaseService,
     private auth: AuthService
   ) { }
 
-  getUsersByRol(rol: DocumentReference): Query<any> {
-    return this.firebase.getList<any>(this.collection).ref.where('rol', '==', rol).orderBy('createdAt', "desc")
+  getUsersByRol(collection: string,rol: DocumentReference): Query<any> {
+    return this.firebase.getList<any>(collection).ref.where('rol', '==', rol).orderBy('createdAt', "desc")
   }
   getRol(): AngularFirestoreCollection<Rol> {
     return this.firebase.getList<Rol>("rols")
@@ -34,17 +33,17 @@ export class UserService {
   getIdentificationType(): Observable<DocumentSnapshot<any>> {
     return this.firebase.getList<any>("metadata").doc("identificationType").get()
   }
-  getDetailUser(id: string): AngularFirestoreDocument<User> {
-    return this.firebase.getObject(this.collection, id)
+  getDetailUser(collection: string, id: string): AngularFirestoreDocument<User> {
+    return this.firebase.getObject(collection, id)
   }
   createAuthUser(email: string, password: string): Promise<firebase.default.auth.UserCredential> {
     return this.auth.signUp(email, password)
   }
-  createUser(data: Object, id: string): Promise<void> {
-    return this.firebase.postListItemCustomId(this.collection, id, data)
+  createUser(collection: string, data: Object, id: string): Promise<void> {
+    return this.firebase.postListItemCustomId(collection, id, data)
   }
-  updateUser(path: string, data: Object) {
-    return this.firebase.putObject(this.collection, path, data)
+  updateUser(collection: string, path: string, data: Object) {
+    return this.firebase.putObject(collection, path, data)
   }
   deleteUser(path: string) {
     return this.firebase.deleteObject(path)

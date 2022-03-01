@@ -45,43 +45,39 @@ export class LoginComponent {
 
       await this.auth.login(email, password).then((user?) => {
         if (user?.user) {
-          this.firestore.collection("users").doc(user.user!.uid).get().subscribe(async (documentSnapshot) => {
+          this.firestore.collection("admins").doc(user.user!.uid).get().subscribe(async (documentSnapshot) => {
+            if (documentSnapshot.exists){
 
-            const user = documentSnapshot.data() as User
-            const rolUser = user.rol as any
-            const rolId = rolUser.id
-            const rolData = await this.userService.getRolByKey('admin')
-            const rol = rolData.docs[0].ref.id
-            const isActive = user.isActive
+              const user = documentSnapshot.data() as User
+              const rolUser = user.rol as any
+              const rolId = rolUser.id
+              const rolData = await this.userService.getRolByKey('admin')
+              const rol = rolData.docs[0].ref.id
+              const isActive = user.isActive
 
-            if (rol === rolId) {
-              if(isActive){
-                this.auth.session(true)
-                this.navCtrl.Push("dashboard");
-              }else {
-                this.auth.session(false)
-                this.loginForm.reset()
-                this.auth.logout()
-                this.isLoading = false
-                this.message = "usuario inactivo"
-                this.notification.showMessage(this.message)
+              if (rol === rolId) {
+                if(isActive){
+                  this.auth.session(true)
+                  this.navCtrl.Push("dashboard");
+                }else {
+                  this.message = "usuario inactivo"
+                  this.logout(this.message)
 
+                }
+              } else {
+                this.message = 'Usuario o contraseña incorrectos'
+                this.logout(this.message)
               }
             } else {
-              this.auth.session(false)
-              this.auth.logout()
-              this.loginForm.reset()
-              this.isLoading = false
               this.message = 'Usuario o contraseña incorrectos'
-              this.notification.showMessage(this.message)
+              this.logout(this.message)
             }
           })
         }
       }
       ).catch(() => {
-        this.isLoading = false
         this.message = 'Usuario o contraseña incorrectos'
-        this.notification.showMessage(this.message)
+        this.logout(this.message)
       })
     } else {
       Object.values(this.loginForm.controls).forEach(control => {
@@ -93,5 +89,13 @@ export class LoginComponent {
         }
       })
     }
+  }
+
+  logout(message:string){
+    this.auth.session(false)
+    this.loginForm.reset()
+    this.auth.logout()
+    this.isLoading = false
+    this.notification.showMessage(message)
   }
 }
