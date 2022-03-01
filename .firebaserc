@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "pruebas-510e8": {
+      "hosting": {
+        "backoffice": [
+          "pruebas-510e8"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "pruebas-510e8"
+  }
+}
