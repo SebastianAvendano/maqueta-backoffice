@@ -7,7 +7,7 @@ const redirectUnauthorizedToLogin = () => redirectUnauthorizedTo(['login']);
 const redirectLoggedInToItems = () => redirectLoggedInTo(['dashboard']);
 const belongsToAccount = (next:any) => hasCustomClaim(`account-${next.params.id}`);
 
-const routes: Routes = [
+const routes: Routes = [ 
   {
     path: '',
     loadChildren: () => import('../pages/dashboard/dasboard.module').then( m => m.DashboardPageModule),
@@ -31,7 +31,11 @@ const routes: Routes = [
     loadChildren: () => import('../pages/login/login.module').then( m => m.LoginPageModule),
     canActivate: [AngularFireAuthGuard],
     data: { authGuardPipe: redirectLoggedInToItems }
-  }
+  },
+  {
+    path: 'forgot-password',
+    loadChildren: () => import('../pages/forgotPassword/forgotPassword.module').then( m => m.ForgotPasswordPageModule),
+  },
 ];
 
 @NgModule({

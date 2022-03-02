@@ -7,15 +7,15 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzCardModule } from 'ng-zorro-antd/card';
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
-
-
+import { NzMessageModule} from 'ng-zorro-antd/message';
 
 import { LoginComponent } from './login.component';
+import { NotificationService } from '../../providers/notifications/notification.service';
 
 
 @NgModule({
   imports: [
-    
+
     LoginPageRoutingModule,
     CommonModule,
     FormsModule,
@@ -24,12 +24,12 @@ import { LoginComponent } from './login.component';
     NzInputModule,
     NzButtonModule,
     NzCardModule,
-    NzCheckboxModule
-
+    NzCheckboxModule,
+    NzMessageModule,
   ],
   declarations:[
     LoginComponent
   ],
-  providers:[]
+  providers:[NotificationService]
 })
 export class LoginPageModule {}

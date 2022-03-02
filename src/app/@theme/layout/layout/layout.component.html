@@ -3,16 +3,20 @@
     [nzTrigger]="null" *ngIf="showLayout">
     <div class="sidebar-logo">
       <img src="../../../../assets/images/logo.jpg" alt="logo">
-      <h1>Ant Design Of Angular</h1>
     </div>
+
     <ul nz-menu nzTheme="dark" nzMode="inline" [nzInlineCollapsed]="isCollapsed">
-      <li nz-menu-item nzOpen nzMatchRouter>
-        <a routerLink="/dashboard">Dashboard</a>
+      <li nz-menu-item routerLink="/dashboard" nzMatchRouter>
+        <i nz-icon nzType="dashboard" nzTheme="outline"></i>
+        <span >Dashboard</span>
       </li>
       <li nz-submenu nzOpen nzTitle="Usuarios" nzIcon="user">
         <ul>
           <li nz-menu-item nzMatchRouter>
-            <a routerLink="/users">users</a>
+            <a [routerLink]="'/users/admin'">Administradores</a>
+          </li>
+          <li nz-menu-item nzMatchRouter>
+            <a [routerLink]="'/users/users'">Usuarios</a>
           </li>
         </ul>
       </li>

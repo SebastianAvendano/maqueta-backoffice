@@ -1,0 +1,53 @@
+<div>
+  <button nz-button nzType="primary" class="button-add" (click)="createUser()">Agrergar</button>
+</div>
+<nz-table #fixedTable
+  [nzSize]="'middle'"
+  [nzTitle]="'Listado de Usuarios'"
+  [nzData]="users"
+  [nzScroll]="{ x: '1600px', y: '200px' }"
+  [nzLoadingDelay]="2500"
+  >
+  <thead>
+    <tr>
+      <th [nzAlign]="'center'" [nzWidth]="'80px'" nzLeft>Estado</th>
+      <th [nzAlign]="'center'" nzLeft>Nombre</th>
+      <th [nzAlign]="'center'">Email</th>
+      <th [nzAlign]="'center'" [nzWidth]="'80px'">Tipo id</th>
+      <th [nzAlign]="'center'">Identificacion</th>
+      <th [nzAlign]="'center'">Telefono</th>
+      <th [nzAlign]="'center'">Fecha Creacion</th>
+      <th [nzAlign]="'center'">fecha Actualizacion</th>
+      <th [nzAlign]="'center'" nzRight>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let user of fixedTable.data"  >
+      <td [nzAlign]="'center'"
+        nzLeft>
+        <nz-tag [nzColor]="user.isActive ? 'green' : 'magenta'">
+          {{user.isActive ? "Activado" : "Desactivado"}}
+        </nz-tag>
+      </td>
+      <td [nzAlign]="'center'" nzLeft>{{user.firtsName + ' ' + user.lastName}}</td>
+      <td [nzAlign]="'center'" >{{ user.email }}</td>
+      <td [nzAlign]="'center'">{{user.identificationType}}</td>
+      <td [nzAlign]="'center'">{{user.identification}}</td>
+      <td [nzAlign]="'center'">{{user.cellPhone}}</td>
+      <td [nzAlign]="'center'">{{ user.createdAt | date:'dd/MM/YYYY, h:mm a'}}</td>
+      <td [nzAlign]="'center'">{{ user.updatedAt | date:'dd/MM/YYYY, h:mm a'}}</td>
+      <td [nzAlign]="'center'" nzRight>
+        <button nz-button nzDanger nz-popconfirm
+          nzType="default"
+          nzPopconfirmTitle="¿Esta seguro de eliminar este registro?"
+          nzPopconfirmPlacement="bottom"
+          (nzOnConfirm)="desactivateUser(user)"
+        >
+          Eliminar
+        </button>
+        <nz-divider nzType="vertical"></nz-divider>
+        <button nz-button nzType="default" (click)="editUser(user)">Editar</button>
+      </td>
+    </tr>
+  </tbody>
+</nz-table>
