@@ -1,4 +1,3 @@
-
 <form nz-form [formGroup]="userForm" [nzLayout]="'vertical'">
   <nz-form-item>
     <nz-form-label nzFor="isActive">Activo</nz-form-label>
@@ -15,7 +14,7 @@
           <span>Nombres</span>
         </nz-form-label>
         <nz-form-control nzErrorTip="Este campo es obligatorio">
-          <input nz-input [value]="userForm.value.firtsName" id="firtsName" formControlName="firtsName"/>
+          <input nz-input [value]="userForm.value.firtsName" id="firtsName" formControlName="firtsName" />
         </nz-form-control>
       </nz-form-item>
     </div>
@@ -35,9 +34,9 @@
     <div nz-col nzSpan="12">
       <nz-form-item>
         <nz-form-label nzRequired nzFor="identificationType">Tipo de Identificacion</nz-form-label>
-        <nz-form-control  nzErrorTip="Debe seleccionar el tipo de identificación">
+        <nz-form-control nzErrorTip="Debe seleccionar el tipo de identificación">
           <nz-select nzId="identificationType" formControlName="identificationType" nzPlaceHolder="Seleccionar">
-            <nz-option [nzValue]="document" *ngFor="let document of documentType" [nzLabel]="document" ></nz-option>
+            <nz-option [nzValue]="document" *ngFor="let document of documentType" [nzLabel]="document"></nz-option>
           </nz-select>
         </nz-form-control>
       </nz-form-item>
@@ -55,18 +54,20 @@
   <div nz-row [nzGutter]="16">
     <div nz-col nzSpan="12">
       <nz-form-item>
-        <nz-form-label nzRequired nzFor="email">E-mail</nz-form-label>
-        <nz-form-control nzErrorTp="Ingrese un correo valido">
-          <input nz-input formControlName="email" id="email" />
-        </nz-form-control>
+        <fieldset [disabled]="isEditing">
+          <nz-form-label nzRequired nzFor="email">E-mail</nz-form-label>
+          <nz-form-control nzErrorTp="Ingrese un correo valido">
+            <input nz-input formControlName="email" id="email" />
+          </nz-form-control>
+        </fieldset>
       </nz-form-item>
     </div>
     <div nz-col nzSpan="12" *ngIf="!isEditing">
       <nz-form-item>
         <nz-form-label nzFor="password" nzRequired>Contaseña</nz-form-label>
-          <nz-form-control nzErrorTip="La contraseña es obligatoria">
-            <input nz-input type="password" id="password" formControlName="password" />
-          </nz-form-control>
+        <nz-form-control nzErrorTip="La contraseña es obligatoria">
+          <input nz-input type="password" id="password" formControlName="password" />
+        </nz-form-control>
       </nz-form-item>
     </div>
   </div>
@@ -75,8 +76,7 @@
     <div nz-col nzSpan="12">
       <nz-form-item>
         <nz-form-label nzFor="cellPhone" nzRequired>Telefono</nz-form-label>
-        <nz-form-control [nzValidateStatus]="userForm.controls['cellPhone']"
-          nzErrorTip="Este campo es obligatorio">
+        <nz-form-control [nzValidateStatus]="userForm.controls['cellPhone']" nzErrorTip="Este campo es obligatorio">
           <input formControlName="cellPhone" id="'cellPhone'" nz-input />
         </nz-form-control>
       </nz-form-item>
@@ -88,4 +88,3 @@
     <button nz-button nzType="primary" (click)="validateAction()">{{isEditing ? "Actualizar" : "Crear"}}</button>
   </div>
 </form>
-
