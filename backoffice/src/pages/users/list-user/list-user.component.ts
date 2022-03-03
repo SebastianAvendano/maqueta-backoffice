@@ -9,7 +9,7 @@ import { UserService } from '../users.service';
 // Models
 import { Rol } from '../../../models/rol/index';
 import { User } from '../../../models/user/index';
-import { CreateUserComponent } from '../create-user/create.component';
+import { UserFormComponent } from '../create-user/user-form.component';
 
 @Component({
   selector: 'app-list',
@@ -86,7 +86,7 @@ export class ListUserComponent implements OnInit {
         rol: this.rol,
         user: user,
       },
-      nzContent: CreateUserComponent
+      nzContent: UserFormComponent
     })
   }
 

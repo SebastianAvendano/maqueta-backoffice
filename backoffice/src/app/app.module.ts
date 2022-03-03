@@ -1,3 +1,4 @@
+import { DashboardPageModule } from './../pages/dashboard/dasboard.module';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
@@ -23,6 +24,9 @@ import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { AngularFireStorageModule } from '@angular/fire/compat/storage';
 import { AngularFireModule } from '@angular/fire/compat';
 import { environment } from '../environments/environment';
+import { UsersPageModule } from '../pages/users/users.module';
+import { LoginPageModule } from '../pages/login/login.module';
+import { ForgotPasswordPageModule } from 'src/pages/forgotPassword/forgotPassword.module';
 
 registerLocaleData(en);
 
@@ -40,7 +44,11 @@ registerLocaleData(en);
     HttpClientModule,
     BrowserAnimationsModule,
     IconsProviderModule,
-    ThemeModule
+    ThemeModule,
+    UsersPageModule,
+    LoginPageModule,
+    ForgotPasswordPageModule,
+    DashboardPageModule
   ],
   providers: [{ provide: NZ_I18N, useValue: en_US }, AuthService, FirebaseService, NavigatorService, ParamsService, BroadCastService, AuthService, ParamsService,
     AngularFireAuthGuard,

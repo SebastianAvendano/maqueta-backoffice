@@ -4,7 +4,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 //Components
 import { ListUserComponent } from './list-user/list-user.component';
-import { CreateUserComponent } from './create-user/create.component';
 import { ListAdminsComponent } from './list-admins/list-admins.component';
 
 //Modules
@@ -25,6 +24,7 @@ import { UsersPageRoutingModule } from './users-routing.module';
 import { UserService } from './users.service';
 import { NotificationService } from '../../providers/notifications/notification.service';
 import { CreateAdminComponent } from './create-admin/create-admin.component';
+import { UserFormComponent } from './create-user/user-form.component';
 
 
 @NgModule({
@@ -47,7 +47,7 @@ import { CreateAdminComponent } from './create-admin/create-admin.component';
   ],
   declarations: [
     ListUserComponent,
-    CreateUserComponent,
+    UserFormComponent,
     CreateAdminComponent,
     ListAdminsComponent
   ],
