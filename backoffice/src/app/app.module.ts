@@ -1,10 +1,9 @@
 import { DashboardPageModule } from './../pages/dashboard/dasboard.module';
-import { NgModule } from '@angular/core';
+import { NgModule, InjectionToken, Optional } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppComponent } from './app.component';
-import { NZ_I18N } from 'ng-zorro-antd/i18n';
-import { en_US } from 'ng-zorro-antd/i18n';
+// import { N, en_US } from 'ng-zorro-antd/i18n';
 import { registerLocaleData } from '@angular/common';
 import en from '@angular/common/locales/en';
 import { FormsModule } from '@angular/forms';
@@ -27,7 +26,14 @@ import { environment } from '../environments/environment';
 import { UsersPageModule } from '../pages/users/users.module';
 import { LoginPageModule } from '../pages/login/login.module';
 import { ForgotPasswordPageModule } from 'src/pages/forgotPassword/forgotPassword.module';
+import { FirebaseAppModule, provideFirebaseApp } from '@angular/fire/app';
+import { initializeApp } from 'firebase/app';
 
+import type { app } from 'firebase-admin';
+import { initializeAppCheck, provideAppCheck } from '@angular/fire/app-check';
+import { CustomProvider } from 'firebase/app-check';
+
+export const FIREBASE_ADMIN = new InjectionToken<app.App>('firebase-admin');
 registerLocaleData(en);
 
 @NgModule({
@@ -36,6 +42,7 @@ registerLocaleData(en);
   ],
   imports: [
     AngularFireModule.initializeApp(environment.firebaseConfig),
+    FirebaseAppModule,
     AngularFireAuthModule,
     AngularFirestoreModule.enablePersistence(),
     AngularFireStorageModule,
@@ -48,9 +55,23 @@ registerLocaleData(en);
     UsersPageModule,
     LoginPageModule,
     ForgotPasswordPageModule,
-    DashboardPageModule
+    DashboardPageModule,
+    provideAppCheck((injector) => {
+      let provider: any
+      const admin = injector.get<app.App | null>(FIREBASE_ADMIN, null);
+      if (admin) {
+         provider = new CustomProvider({
+          getToken: () =>
+            admin.
+              appCheck().
+              createToken(environment.firebaseConfig.appId, { ttlMillis: 604_800_000, /* 1 week */ }).
+              then(({ token, ttlMillis: expireTimeMillis }) => ({ token, expireTimeMillis }))
+        });
+      }
+      return initializeAppCheck(undefined, { provider, isTokenAutoRefreshEnabled: false });
+    }, [new Optional(), FIREBASE_ADMIN]),
   ],
-  providers: [{ provide: NZ_I18N, useValue: en_US }, AuthService, FirebaseService, NavigatorService, ParamsService, BroadCastService, AuthService, ParamsService,
+  providers: [AuthService, FirebaseService, NavigatorService, ParamsService, BroadCastService, AuthService, ParamsService,
     AngularFireAuthGuard,
   ],
   bootstrap: [AppComponent]
