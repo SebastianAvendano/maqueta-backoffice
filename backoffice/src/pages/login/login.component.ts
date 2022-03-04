@@ -1,6 +1,7 @@
 // Libraries
 import { Component } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { Auth, GoogleAuthProvider, signInWithPopup, signInAnonymously } from '@angular/fire/auth';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 // Models
@@ -23,8 +24,9 @@ export class LoginComponent {
   isLoading = false;
 
   constructor(
+    // @Optional() private auth: Auth,
     private fb: FormBuilder,
-    private auth: AuthService,
+    private afAuth: AuthService,
     private userService: UserService,
     private navCtrl: NavigatorService,
     private firestore: AngularFirestore,
@@ -43,7 +45,7 @@ export class LoginComponent {
       const email = this.loginForm.value.email
       const password = this.loginForm.value.password
 
-      await this.auth.login(email, password).then((user?) => {
+      await this.afAuth.login(email, password).then((user?) => {
         if (user?.user) {
           this.firestore.collection("admins").doc(user.user!.uid).get().subscribe(async (documentSnapshot) => {
             if (documentSnapshot.exists){
@@ -57,7 +59,7 @@ export class LoginComponent {
 
               if (rol === rolId) {
                 if(isActive){
-                  this.auth.session(true)
+                  this.afAuth.session(true)
                   this.navCtrl.Push("dashboard");
                 }else {
                   this.message = "usuario inactivo"
@@ -92,9 +94,9 @@ export class LoginComponent {
   }
 
   logout(message:string){
-    this.auth.session(false)
+    this.afAuth.session(false)
     this.loginForm.reset()
-    this.auth.logout()
+    this.afAuth.logout()
     this.isLoading = false
     this.notification.showMessage(message)
   }

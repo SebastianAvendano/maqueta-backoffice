@@ -78,9 +78,9 @@ export class UserFormComponent implements OnInit {
           const id = credential.user?.uid
           if (id !== null) {
             const response = await this.createUser(id!)
-            // if (!response) {
+            if (!response) {
               // this.userService.deleteUserAuth(credential.user)
-            // }
+            }
           }
         }
       ).catch( error => {

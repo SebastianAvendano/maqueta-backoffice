@@ -10,6 +10,7 @@ import { FirebaseService } from '../../providers/firebase/firebase.service';
 // Models
 import { Rol } from '../../models/rol/index';
 import { User } from '../../models/user/index';
+import { UserCredential, User as UserAuth } from 'firebase/auth';
 
 @Injectable({
   providedIn: 'root'
@@ -36,7 +37,7 @@ export class UserService {
   getDetailUser(collection: string, id: string): AngularFirestoreDocument<User> {
     return this.firebase.getObject(collection, id)
   }
-  createAuthUser(email: string, password: string): Promise<firebase.default.auth.UserCredential> {
+  createAuthUser(email: string, password: string): Promise<UserCredential> {
     return this.auth.signUp(email, password)
   }
   createUser(collection: string, data: Object, id: string): Promise<void> {
@@ -48,7 +49,7 @@ export class UserService {
   deleteUser(path: string) {
     return this.firebase.deleteObject(path)
   }
-  deleteUserAuth(user: firebase.default.User | null): void {
+  deleteUserAuth(user: UserAuth | null): void {
     user?.delete()
   }
 

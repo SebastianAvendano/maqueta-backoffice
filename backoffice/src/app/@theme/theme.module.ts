@@ -1,3 +1,4 @@
+import { AuthService } from './../../providers/auth/auth.service';
 import { ModuleWithProviders, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LayoutComponent } from './layout/layout/layout.component';
@@ -36,7 +37,7 @@ export class ThemeModule {
 
     return {
       ngModule: ThemeModule,
-      providers: [SidebarService],
+      providers: [SidebarService, AuthService],
     };
   }
 }

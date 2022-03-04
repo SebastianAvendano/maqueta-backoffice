@@ -3,7 +3,9 @@ import { AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection 
 import firebase from 'firebase/compat/app';
 
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class FirebaseService {
 
   constructor(private db: AngularFirestore) {
