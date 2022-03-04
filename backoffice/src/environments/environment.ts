@@ -12,7 +12,7 @@ export const environment = {
     authDomain: 'pruebas-510e8.firebaseapp.com',
     messagingSenderId: '151289121533',
   },
-  production: false,
+  production: true,
   firebaseConfig : {
     apiKey: "AIzaSyDBswU2Q_hNpET7mt-nc24LCTfWZveSbZ8",
     authDomain: "pruebas-510e8.firebaseapp.com",
